@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity: The Active and Passive Voice</title>
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,500" rel="stylesheet">
+  <link rel="stylesheet" href="activity-style.css">
+	<script src="script/jquery-1.7.2.min.js"></script>
+	<script src="script/navigation.js"></script>    
+</head>
+<body>
+	<div class="wrapper">
+	<div class="header">
+	<div class="mainColor">
+		<h1>Activity: The Active and Passive Voice</h1>
+	</div>
+		<div class="darker"></div>
+		<div class="lighter"></div>
+	</div>
+	
+	<div class="slide show">
+		<p>Active and passive voice can be used strategically when communicating in the workplace. Generally, active voice should be used when you are writing business messages because it sounds lively and direct. However, passive voice can be helpful when writing bad news messages. Do you know the difference between the active and passive voice? In this activity, you will identify sentences as either active or passive. Then, you will rewrite them to become either active or passive.</p>
+	</div>
+
+	<div class="slide" id="lastSlide">
+		<h2>Debriefing</h2>
+		<p>You can use active and passive voice strategically when it comes to business communication. Now that you know the difference, try to apply active voice in most of your business messages, but reserve passive voice when you are trying to show tact, de-emphasize bad news, or conceal the person responsible for an action. For more practice on active and passive voice, check out pages 169&ndash;173 of your text (<a href="/d2l/common/dialogs/quickLink/quickLink.d2l?ou=8039&amp;type=lti&amp;rcode=OUPUS-213795&amp;srcou=8039" target="_blank" rel="noopener noreferrer">Chapter 5</a>).</p>
+	</div>
+
+	<div class="footer">
+	<div class="mainColor"></div>
+	<div class="darker"></div>
+	<div class="lighter">
+		<div id="navButtons"><button id="back">Back</button> <button id="next">Next</button></div>
+	</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		$(function(){
+			"use strict";
+
+			// Object containing all data for displaying and validating sentences
+			var activity = {
+				"sentences": [
+					{"no":"1","original":"Robert handed in his project at 10 am this morning.","sample":"The project was handed in by Robert at 10 am this morning.","voice":"active"},
+					{"no":"2","original":"Executive files may not be taken out of the cabinet.","sample":"You may not take executive files out of the cabinet.","voice":"passive"},
+					{"no":"3","original":"Ingrid requested a package from the warehouse.","sample":"A package was requested from the warehouse by Ingrid.","voice":"active"},
+					{"no":"4","original":"Jeff needs to see the last expense report.","sample":"The last expense report needs to be seen by Jeff.","voice":"active"},
+					{"no":"5","original":"A book swap was organized by the social committee.","sample":"The social committee organized a book swap.","voice":"passive"},
+					{"no":"6","original":"A copy of the agreement was requested by the client.","sample":"The client requested a copy of the agreement.","voice":"passive"},
+					{"no":"7","original":"We cannot authorize your request.","sample":"Your request cannot be authorized.","voice":"active"},
+					{"no":"8","original":"Eight thousand shares of the company were purchased.","sample":"We bought eight thousand shares of the company.","voice":"passive"},
+					{"no":"9","original":"Management is restructuring several roles.","sample":"Several roles are being restructured.","voice":"active"},
+					{"no":"10","original":"Your order cannot be found.","sample":"We cannot find your order.","voice":"passive"}
+				],
+
+				"template":"`	<div class='slide'>		<div class='question backgroundTexture'>			<h2>Sentence ${this.no}</h2>			<p class='sentence' data-text='${this.voice}'><span>${this.original}</span></p>			<button class='answer_button' data-text='active'>Active</button>			<button class='answer_button' data-text='passive'>Passive</button>			<div class='answer'>				<div>					<p><span class='feedback bold'></span> This sentence is in <span class='voice'></span> voice. Now write the sentence in <span class='instruction bold'></span> voice.</p>					<textarea></textarea><br>					<button class='review'>Review</button>				</div>				<div class='answer'>					<h2 class='reviewH'>Review</h2>					<p>Here is your rewritten sentence:</p>					<p class='studentInput bold'></p>					<p>Here is a sample sentence rewritten in <span class='instruction'></span> voice:</p>					<p class='sample bold'>${this.sample}</p>					</div>			</div>		</div>`"
+			};
+
+      $(activity.sentences).each(function(index){
+        $("#lastSlide").before(eval(activity.template));
+      });
+
+			// Events on clicking Active or Passive button
+			  $(".answer_button").on("click", function() {
+
+			  	// Tell the user in what voice the sentence is
+			  	var sentenceVoice = $(this).prevAll(".sentence").attr("data-text");
+			  	$(this).parent().find(".voice").html(sentenceVoice);
+
+			  	// Add instructions to rewrite the sentence
+			  	if (sentenceVoice=="active") {
+			  		$(this).parent().find(".instruction").html("passive");
+			  	} else {
+			  		$(this).parent().find(".instruction").html("active");
+			  	}
+
+			  	// Get button's data and compare to sentence data
+			  	// Display Correct or Incorrect depending on results of comparison
+			  	if ($(this).attr("data-text")==sentenceVoice){
+			  		console.log("MATCH");
+			  		$(this).parent().find(".feedback").html("Correct.").css("color","#38ca02");
+			  	} else {
+			  		$(this).parent().find(".feedback").html("Incorrect.").css("color","#ff0042");
+			  		console.log("MISS");
+			  	}
+
+			  	// Show then next step of the activity and remove buttons
+			  	$(this).siblings(".answer").slideDown("slow");
+			    $(this).siblings(".answer_button").remove();
+			    $(this).remove();
+				});
+
+			// Events on clicking the Review button 
+				$(".review").on("click", function() {
+
+					// Allow to click Review only if there is textarea input
+					var userInput = $(this).prevAll("textarea").val();
+					if (userInput==0) {
+						alert("Write the sentence before reviewing.");
+					} else {
+						// Add input from textarea to line in Review
+						$(this).parent().next(".answer").find(".studentInput").html(userInput);
+
+
+				  	$(this).parent().next(".answer").slideDown("slow");
+				  	$(this).prevAll().remove();
+				    $(this).remove();
+					}
+
+
+				});
+			});
+	</script>
+
+</body>
+</html>
